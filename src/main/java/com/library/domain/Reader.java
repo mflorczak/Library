@@ -3,12 +3,16 @@ package com.library.domain;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "READERS")
@@ -28,4 +32,11 @@ public class Reader {
     @Column(name = "CREATE_ACCOUNTS")
     @NotNull
     private LocalDate createAccount;
+
+    @OneToMany(
+            targetEntity = Borrow.class,
+            fetch = FetchType.LAZY,
+            mappedBy = "copyBook"
+    )
+    private List<Borrow> borrows = new ArrayList<>();
 }

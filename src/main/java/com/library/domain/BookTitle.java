@@ -1,6 +1,5 @@
 package com.library.domain;
 
-import jdk.nashorn.internal.ir.annotations.Ignore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "BOOKS_TITLES")
@@ -19,7 +19,6 @@ public class BookTitle {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")
-    @Ignore
     private int id;
 
     @Column(name = "TITLE")
@@ -36,11 +35,9 @@ public class BookTitle {
 
     @OneToMany(
             targetEntity = CopyBook.class,
-            cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
             mappedBy = "bookTitle"
     )
-    @Setter
     private List<CopyBook> books = new ArrayList<>();
 
     public BookTitle(String title, String author, int publicationOfYear) {

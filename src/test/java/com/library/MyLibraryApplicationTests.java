@@ -37,12 +37,19 @@ public class MyLibraryApplicationTests {
 
 		//When
 		bookTitleRepository.save(bookTitle);
+		copyBookRepository.save(books);
+		copyBookRepository.save(books1);
 		int id = bookTitle.getId();
+		int idbooks = books.getId();
+		int idbooks1 = books1.getId();
 
 		//Then
 		Assert.assertNotEquals(0,id);
 
 		//Clean up
+		copyBookRepository.delete(idbooks);
+		copyBookRepository.delete(idbooks1);
 		bookTitleRepository.delete(id);
+
 	}
 }

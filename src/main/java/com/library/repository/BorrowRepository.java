@@ -1,4 +1,15 @@
 package com.library.repository;
 
-public interface BorrowRepository {
+import com.library.domain.Borrow;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
+import javax.transaction.Transactional;
+import java.util.List;
+
+@Transactional
+@Repository
+public interface BorrowRepository extends CrudRepository<Borrow, Integer> {
+    @Override
+    List<Borrow> findAll();
 }
