@@ -1,5 +1,6 @@
 package com.library.mapper;
 
+import com.library.controller.BookTitleNotFoundException;
 import com.library.domain.*;
 import com.library.service.DbService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +13,11 @@ import java.util.stream.Collectors;
 public class Mapper {
     @Autowired
     private DbService dbService;
-    public CopyBook mapToCopyBook(CopyBookDto copyBookDto) {
+    public CopyBook mapToCopyBook(CopyBookDto copyBookDto) throws BookTitleNotFoundException {
         CopyBook cb = new CopyBook();
         cb.setId(copyBookDto.getId());
         cb.setStatus(copyBookDto.getStatus());
-        cb.setBookTitle(dbService.findBookTitleById(copyBookDto.getBookTitleId()));
+        cb.setBookTitle(dbService.findBookTitleById(copyBookDto.getBookTitleId()).orElseThrow(BookTitleNotFoundException::new));
         cb.setBorrowList(copyBookDto.getBorrowList());
         return cb;
     }
@@ -42,7 +43,7 @@ public class Mapper {
         bookTitle.setTitle(bookTitleDto.getTitle());
         bookTitle.setAuthor(bookTitleDto.getAuthor());
         bookTitle.setPublicationOfYear(bookTitleDto.getPublicationOfYear());
-        bookTitle.setBooks(bookTitleDto.getBooks());
+        bookTitle.setCopyBookList(bookTitleDto.getBooks());
         return bookTitle;
     }
 
@@ -51,13 +52,13 @@ public class Mapper {
         bookTitleDto.setId(bookTitle.getId());
         bookTitleDto.setAuthor(bookTitle.getAuthor());
         bookTitleDto.setPublicationOfYear(bookTitle.getPublicationOfYear());
-        bookTitleDto.setBooks(bookTitle.getBooks());
+        bookTitleDto.setBooks(bookTitle.getCopyBookList());
         return bookTitleDto;
     }
 
     public List<BookTitleDto> mapToBookTitleDtoList(List<BookTitle> bookTitleList) {
         return bookTitleList.stream()
-                .map(b -> new BookTitleDto(b.getId(), b.getTitle(), b.getAuthor(), b.getPublicationOfYear(), b.getBooks()))
+                .map(b -> new BookTitleDto(b.getId(), b.getTitle(), b.getAuthor(), b.getPublicationOfYear(), b.getCopyBookList()))
                 .collect(Collectors.toList());
     }
 

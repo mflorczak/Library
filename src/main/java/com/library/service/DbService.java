@@ -28,8 +28,8 @@ public class DbService {
     @Autowired
     private ReaderRepository readerRepository;
 
-    public BookTitle findBookTitleById(final int bookTitleId) {
-        return bookTitleRepository.findOne(bookTitleId);
+    public Optional<BookTitle> findBookTitleById(final int bookTitleId) {
+        return bookTitleRepository.findById(bookTitleId);
     }
 
     public Borrow findBorrowById(final int borrowId) {

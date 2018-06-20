@@ -32,8 +32,8 @@ public class MyLibraryApplicationTests {
 		books.setBookTitle(bookTitle);
 		books1.setBookTitle(bookTitle);
 
-		bookTitle.getBooks().add(books);
-		bookTitle.getBooks().add(books1);
+		bookTitle.getCopyBookList().add(books);
+		bookTitle.getCopyBookList().add(books1);
 
 		//When
 		bookTitleRepository.save(bookTitle);

@@ -13,4 +13,6 @@ import java.util.Optional;
 public interface BookTitleRepository extends CrudRepository<BookTitle, Integer> {
     @Override
     List<BookTitle> findAll();
+
+    Optional<BookTitle> findById(int bookTitleId);
 }

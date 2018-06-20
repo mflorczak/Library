@@ -38,11 +38,15 @@ public class BookTitle {
             fetch = FetchType.LAZY,
             mappedBy = "bookTitle"
     )
-    private List<CopyBook> books = new ArrayList<>();
+    private List<CopyBook> copyBookList = new ArrayList<>();
 
     public BookTitle(String title, String author, int publicationOfYear) {
         this.title = title;
         this.author = author;
         this.publicationOfYear = publicationOfYear;
+    }
+
+    public int quantityBooks() {
+        return copyBookList.size();
     }
 }

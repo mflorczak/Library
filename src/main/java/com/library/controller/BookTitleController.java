@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -25,8 +26,8 @@ public class BookTitleController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "getBookTitle")
-    public BookTitleDto getBookTitle(@RequestParam int id) {
-        return mapper.mapToBookTitleDto(dbService.findBookTitleById(id));
+    public BookTitleDto getBookTitle(@RequestParam int id) throws BookTitleNotFoundException {
+        return mapper.mapToBookTitleDto(dbService.findBookTitleById(id).orElseThrow(BookTitleNotFoundException::new));
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "updateBookTitle")
