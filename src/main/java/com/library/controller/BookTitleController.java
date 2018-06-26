@@ -27,7 +27,7 @@ public class BookTitleController {
 
     @RequestMapping(method = RequestMethod.GET, value = "getBookTitle")
     public BookTitleDto getBookTitle(@RequestParam int id) throws BookTitleNotFoundException {
-        return mapper.mapToBookTitleDto(dbService.findBookTitleById(id).orElseThrow(BookTitleNotFoundException::new));
+        return mapper.mapToBookTitleDto(dbService.findBookTitleById(id).orElseThrow(mapper::createException));
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "updateBookTitle")
@@ -39,5 +39,4 @@ public class BookTitleController {
     public void createBookTitle(@RequestBody BookTitleDto bookTitleDto){
         dbService.saveBookTitle(mapper.mapToBookTitle(bookTitleDto));
     }
-
 }

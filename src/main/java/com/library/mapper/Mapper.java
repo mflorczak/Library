@@ -13,11 +13,14 @@ import java.util.stream.Collectors;
 public class Mapper {
     @Autowired
     private DbService dbService;
+    public BookTitleNotFoundException createException() {
+        return new BookTitleNotFoundException("Not found book title id");
+    }
     public CopyBook mapToCopyBook(CopyBookDto copyBookDto) throws BookTitleNotFoundException {
         CopyBook cb = new CopyBook();
         cb.setId(copyBookDto.getId());
         cb.setStatus(copyBookDto.getStatus());
-        cb.setBookTitle(dbService.findBookTitleById(copyBookDto.getBookTitleId()).orElseThrow(BookTitleNotFoundException::new));
+        cb.setBookTitle(dbService.findBookTitleById(copyBookDto.getBookTitleId()).orElseThrow(this::createException));
         cb.setBorrowList(copyBookDto.getBorrowList());
         return cb;
     }
