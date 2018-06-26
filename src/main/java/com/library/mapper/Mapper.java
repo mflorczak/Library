@@ -1,6 +1,9 @@
 package com.library.mapper;
 
 import com.library.controller.BookTitleNotFoundException;
+import com.library.controller.BorrowNotFoundException;
+import com.library.controller.CopyBookNotFoundException;
+import com.library.controller.ReaderNotFoundException;
 import com.library.domain.*;
 import com.library.service.DbService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +16,28 @@ import java.util.stream.Collectors;
 public class Mapper {
     @Autowired
     private DbService dbService;
+
+    public BookTitleNotFoundException createBookTitleException() {
+        return new BookTitleNotFoundException("Not found BookTitle id");
+    }
+
+    public ReaderNotFoundException createReaderException() {
+        return new ReaderNotFoundException("Not found Reader id");
+    }
+
+    public CopyBookNotFoundException createCoppyBookException() {
+        return new CopyBookNotFoundException("Not found CopyBook id");
+    }
+
+    public BorrowNotFoundException createBorrowException() {
+        return new BorrowNotFoundException("Not fund Borrow id");
+    }
+
     public CopyBook mapToCopyBook(CopyBookDto copyBookDto) throws BookTitleNotFoundException {
         CopyBook cb = new CopyBook();
         cb.setId(copyBookDto.getId());
         cb.setStatus(copyBookDto.getStatus());
-        cb.setBookTitle(dbService.findBookTitleById(copyBookDto.getBookTitleId()).orElseThrow(BookTitleNotFoundException::new));
+        cb.setBookTitle(dbService.findBookTitleById(copyBookDto.getBookTitleId()).orElseThrow(this::createBookTitleException));
         cb.setBorrowList(copyBookDto.getBorrowList());
         return cb;
     }
@@ -62,11 +82,11 @@ public class Mapper {
                 .collect(Collectors.toList());
     }
 
-    public Borrow mapToBorrow(BorrowDto borrowDto) {
+    public Borrow mapToBorrow(BorrowDto borrowDto) throws ReaderNotFoundException, CopyBookNotFoundException {
         Borrow borrow = new Borrow();
         borrow.setId(borrowDto.getId());
-        borrow.setCopyBook(dbService.findCopyBookById(borrowDto.getCopyBookId()));
-        borrow.setReader(dbService.findReaderById(borrowDto.getReaderId()));
+        borrow.setCopyBook(dbService.findCopyBookById(borrowDto.getCopyBookId()).orElseThrow(this::createCoppyBookException));
+        borrow.setReader(dbService.findReaderById(borrowDto.getReaderId()).orElseThrow(this::createReaderException));
         borrow.setBorrowDate(borrowDto.getBorrowDate());
         borrow.setReturnDate(borrowDto.getReturnDate());
         return borrow;

@@ -1,6 +1,5 @@
 package com.library.controller;
 
-import com.library.domain.Reader;
 import com.library.domain.ReaderDto;
 import com.library.mapper.Mapper;
 import com.library.service.DbService;
@@ -25,17 +24,22 @@ public class ReaderController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "getReader")
-    public ReaderDto getReader(@RequestParam int id) {
-        return mapper.mapToReaderDto(dbService.findReaderById(id));
+    public ReaderDto getReader(@RequestParam int id) throws ReaderNotFoundException {
+        return mapper.mapToReaderDto(dbService.findReaderById(id).orElseThrow(mapper::createReaderException));
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "updateReader")
-    public ReaderDto updateReader(@RequestParam ReaderDto readerDto) {
+    public ReaderDto updateReader(@RequestBody ReaderDto readerDto) {
         return mapper.mapToReaderDto(dbService.saveReader(mapper.mapToReader(readerDto)));
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "createReader", consumes = APPLICATION_JSON_VALUE)
     public void createReader(@RequestBody ReaderDto readerDto) {
         dbService.saveReader(mapper.mapToReader(readerDto));
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE, value = "deleteReader")
+    public void deleteReader(@RequestParam int id) {
+        dbService.deleteReader(id);
     }
 }

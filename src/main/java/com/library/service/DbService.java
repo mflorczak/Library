@@ -1,13 +1,11 @@
 package com.library.service;
 
-import com.library.domain.BookTitle;
-import com.library.domain.Borrow;
-import com.library.domain.CopyBook;
-import com.library.domain.Reader;
+import com.library.domain.*;
 import com.library.repository.BookTitleRepository;
 import com.library.repository.BorrowRepository;
 import com.library.repository.CopyBookRepository;
 import com.library.repository.ReaderRepository;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,16 +30,16 @@ public class DbService {
         return bookTitleRepository.findById(bookTitleId);
     }
 
-    public Borrow findBorrowById(final int borrowId) {
-        return borrowRepository.findOne(borrowId);
+    public Optional<Borrow> findBorrowById(final int borrowId) {
+        return borrowRepository.findById(borrowId);
     }
 
-    public CopyBook findCopyBookById(final int copyBook) {
-        return copyBookRepository.findOne(copyBook);
+    public Optional<CopyBook> findCopyBookById(final int copyBook) {
+        return copyBookRepository.findById(copyBook);
     }
 
-    public Reader findReaderById(final int readerId) {
-        return readerRepository.findOne(readerId);
+    public Optional<Reader> findReaderById(final int readerId) {
+        return readerRepository.findById(readerId);
     }
 
     public List<BookTitle> getAllBookTitle() {
@@ -60,35 +58,39 @@ public class DbService {
         return readerRepository.findAll();
     }
 
-    public BookTitle saveBookTitle(BookTitle bookTitle) {
+    public BookTitle saveBookTitle(final BookTitle bookTitle) {
         return bookTitleRepository.save(bookTitle);
     }
 
-    public Borrow saveBorrow(Borrow borrow) {
+    public Borrow saveBorrow(final Borrow borrow) {
         return borrowRepository.save(borrow);
     }
 
-    public CopyBook saveCopyBook(CopyBook copyBook) {
+    public CopyBook saveCopyBook(final CopyBook copyBook) {
         return copyBookRepository.save(copyBook);
     }
 
-    public Reader saveReader(Reader reader) {
+    public Reader saveReader(final Reader reader) {
         return readerRepository.save(reader);
     }
 
-    public void deleteBookTitle(int id) {
+    public void deleteBookTitle(final int id) {
         bookTitleRepository.delete(id);
     }
 
-    public void deleteBorrow(int id) {
+    public void deleteBorrow(final int id) {
         borrowRepository.delete(id);
     }
 
-    public void deleteCopyBook(int id) {
+    public void deleteCopyBook(final int id) {
         copyBookRepository.delete(id);
     }
 
-    public void deleteReader(int id) {
+    public void deleteReader(final int id) {
         readerRepository.delete(id);
+    }
+
+    public CopyBookQuantityDto getQuantity(int id) {
+        return copyBookRepository.quantityBook(id);
     }
 }
