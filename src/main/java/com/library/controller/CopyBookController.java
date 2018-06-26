@@ -73,7 +73,7 @@ public class CopyBookController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "getQuantityBook")
-    public CopyBookQuantityDto getQuantityBook(@RequestParam int book_title_id) {
+    public int getQuantityBook(@RequestParam("id") int book_title_id) {
         return dbService.getQuantity(book_title_id);
     }
 

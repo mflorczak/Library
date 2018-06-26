@@ -17,8 +17,7 @@ import java.util.List;
 @NamedNativeQuery(
         name = "CopyBook.quantityBook",
         query = "SELECT COUNT(*) AS QUANTITY FROM " +
-                "books WHERE status = \"in a warehouse\" AND book_title_id = :book_title_id",
-        resultClass = Integer.class
+                "books WHERE status = \"in a warehouse\" AND book_title_id = :book_title_id"
         )
 @Entity(name = "BOOKS")
 public class CopyBook {

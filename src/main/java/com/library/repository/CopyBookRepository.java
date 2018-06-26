@@ -19,5 +19,5 @@ public interface CopyBookRepository extends CrudRepository<CopyBook, Integer> {
 
     Optional<CopyBook> findById(int copyBookId);
     @Query(nativeQuery = true)
-    CopyBookQuantityDto quantityBook(@Param("book_title_id") int book_title_id);
+    int quantityBook(@Param("book_title_id") int book_title_id);
 }

@@ -90,7 +90,7 @@ public class DbService {
         readerRepository.delete(id);
     }
 
-    public CopyBookQuantityDto getQuantity(int id) {
+    public int getQuantity(int id) {
         return copyBookRepository.quantityBook(id);
     }
 }
