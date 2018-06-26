@@ -7,13 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 
 @RestController
-@RequestMapping(path ="/v1/bookTitle" )
+@RequestMapping("/v1/bookTitle" )
 public class BookTitleController {
     @Autowired
     private DbService dbService;
@@ -27,11 +26,11 @@ public class BookTitleController {
 
     @RequestMapping(method = RequestMethod.GET, value = "getBookTitle")
     public BookTitleDto getBookTitle(@RequestParam int id) throws BookTitleNotFoundException {
-        return mapper.mapToBookTitleDto(dbService.findBookTitleById(id).orElseThrow(mapper::createException));
+        return mapper.mapToBookTitleDto(dbService.findBookTitleById(id).orElseThrow(mapper::createBookTitleException));
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "updateBookTitle")
-    public BookTitleDto updateBookTitle(@RequestParam BookTitleDto bookTitleDto) {
+    public BookTitleDto updateBookTitle(@RequestBody BookTitleDto bookTitleDto) {
         return mapper.mapToBookTitleDto(dbService.saveBookTitle(mapper.mapToBookTitle(bookTitleDto)));
     }
 
@@ -39,4 +38,10 @@ public class BookTitleController {
     public void createBookTitle(@RequestBody BookTitleDto bookTitleDto){
         dbService.saveBookTitle(mapper.mapToBookTitle(bookTitleDto));
     }
+
+    @RequestMapping(method = RequestMethod.DELETE, value = "deleteBookTitle")
+    public void deleteBookTitle(@RequestParam int id) {
+        dbService.deleteBookTitle(id);
+    }
+
 }
