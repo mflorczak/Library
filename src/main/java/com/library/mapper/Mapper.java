@@ -40,15 +40,10 @@ public class Mapper {
         cb.setStatus(copyBookDto.getStatus());
 
         cb.setBookTitle(dbService.findBookTitleById(copyBookDto.getBookTitleId()).orElseThrow(this::createBookTitleException));
-<<<<<<< HEAD
         cb.setBorrowList(new ArrayList<Borrow>());
         for(BorrowDto bdto : copyBookDto.getBorrowDtoList()) {
             cb.getBorrowList().add(dbService.findBorrowById(bdto.getId()).get());
         }
-=======
-
-        cb.setBorrowList(copyBookDto.getBorrowList());
->>>>>>> 9525ff312f8ba2f7e8655c9d550db12fca3f5e68
         return cb;
     }
 
