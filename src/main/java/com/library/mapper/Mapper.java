@@ -9,6 +9,7 @@ import com.library.service.DbService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,7 +39,10 @@ public class Mapper {
         cb.setId(copyBookDto.getId());
         cb.setStatus(copyBookDto.getStatus());
         cb.setBookTitle(dbService.findBookTitleById(copyBookDto.getBookTitleId()).orElseThrow(this::createBookTitleException));
-        cb.setBorrowList(copyBookDto.getBorrowList());
+        cb.setBorrowList(new ArrayList<Borrow>());
+        for(BorrowDto bdto : copyBookDto.getBorrowDtoList()) {
+            cb.getBorrowList().add(dbService.findBorrowById(bdto.getId()).get());
+        }
         return cb;
     }
 
@@ -47,13 +51,13 @@ public class Mapper {
         copyBookDto.setId(copyBook.getId());
         copyBookDto.setStatus(copyBook.getStatus());
         copyBookDto.setBookTitleId(copyBook.getBookTitle().getId());
-        copyBookDto.setBorrowList(copyBook.getBorrowList());
+        copyBookDto.setBorrowDtoList(mapToBorrowDtoList(copyBook.getBorrowList()));
         return copyBookDto;
     }
 
     public List<CopyBookDto> mapToCopyBookDtoList(List<CopyBook> copyBookList) {
         return copyBookList.stream()
-                .map(b -> new CopyBookDto(b.getId(), b.getStatus(), b.getBookTitle().getId(), b.getBorrowList()))
+                .map(b -> new CopyBookDto(b.getId(), b.getStatus(), b.getBookTitle().getId(), mapToBorrowDtoList(b.getBorrowList())))
                 .collect(Collectors.toList());
     }
 
@@ -63,7 +67,10 @@ public class Mapper {
         bookTitle.setTitle(bookTitleDto.getTitle());
         bookTitle.setAuthor(bookTitleDto.getAuthor());
         bookTitle.setPublicationOfYear(bookTitleDto.getPublicationOfYear());
-        bookTitle.setCopyBookList(bookTitleDto.getBooks());
+        bookTitle.setCopyBookList(new ArrayList<CopyBook>());
+        for(CopyBookDto cbd :bookTitleDto.getCopyBookDtoList()) {
+            bookTitle.getCopyBookList().add(dbService.findCopyBookById(cbd.getId()).get());
+        }
         return bookTitle;
     }
 
@@ -72,13 +79,14 @@ public class Mapper {
         bookTitleDto.setId(bookTitle.getId());
         bookTitleDto.setAuthor(bookTitle.getAuthor());
         bookTitleDto.setPublicationOfYear(bookTitle.getPublicationOfYear());
-        bookTitleDto.setBooks(bookTitle.getCopyBookList());
+        bookTitleDto.setCopyBookDtoList(mapToCopyBookDtoList(bookTitle.getCopyBookList()));
         return bookTitleDto;
     }
 
     public List<BookTitleDto> mapToBookTitleDtoList(List<BookTitle> bookTitleList) {
         return bookTitleList.stream()
-                .map(b -> new BookTitleDto(b.getId(), b.getTitle(), b.getAuthor(), b.getPublicationOfYear(), b.getCopyBookList()))
+                .map(b -> new BookTitleDto(b.getId(), b.getTitle(), b.getAuthor(),
+                        b.getPublicationOfYear(), mapToCopyBookDtoList(b.getCopyBookList())))
                 .collect(Collectors.toList());
     }
 
@@ -115,7 +123,10 @@ public class Mapper {
         reader.setName(readerDto.getName());
         reader.setLastname(readerDto.getLastname());
         reader.setCreateAccount(readerDto.getCreateAccount());
-        reader.setBorrows(readerDto.getBorrowList());
+        reader.setBorrows(new ArrayList<>());
+        for(BorrowDto bdto : readerDto.getBorrowDtoList()) {
+            reader.getBorrows().add(dbService.findBorrowById(bdto.getId()).get());
+        }
         return reader;
     }
 
@@ -125,13 +136,14 @@ public class Mapper {
         readerDto.setName(reader.getName());
         readerDto.setLastname(reader.getLastname());
         readerDto.setCreateAccount(reader.getCreateAccount());
-        readerDto.setBorrowList(reader.getBorrows());
+        readerDto.setBorrowDtoList(mapToBorrowDtoList(reader.getBorrows()));
         return readerDto;
     }
 
     public List<ReaderDto> mapToReaderDtoList(List<Reader> readerList) {
         return readerList.stream()
-                .map(r -> new ReaderDto(r.getId(), r.getName(), r.getLastname(), r.getCreateAccount(), r.getBorrows()))
+                .map(r -> new ReaderDto(r.getId(), r.getName(),
+                        r.getLastname(), r.getCreateAccount(), mapToBorrowDtoList(r.getBorrows())))
                 .collect(Collectors.toList());
     }
 }

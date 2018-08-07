@@ -5,15 +5,14 @@ import com.library.repository.BookTitleRepository;
 import com.library.repository.BorrowRepository;
 import com.library.repository.CopyBookRepository;
 import com.library.repository.ReaderRepository;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class DbService {
+
     @Autowired
     private BookTitleRepository bookTitleRepository;
 
@@ -49,6 +48,7 @@ public class DbService {
     public List<Borrow> getAllBorrow() {
         return borrowRepository.findAll();
     }
+
 
     public List<CopyBook> getAllCopyBook() {
         return copyBookRepository.findAll();
@@ -90,7 +90,11 @@ public class DbService {
         readerRepository.delete(id);
     }
 
-    public CopyBookQuantityDto getQuantity(int id) {
+    public int getQuantity(final int id) {
         return copyBookRepository.quantityBook(id);
+    }
+
+    public boolean borrowBook(final int copyBookId, final int readerId) {
+        return borrowRepository.isBorrow(copyBookId, readerId);
     }
 }

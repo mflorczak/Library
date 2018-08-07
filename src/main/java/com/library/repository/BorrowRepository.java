@@ -1,7 +1,9 @@
 package com.library.repository;
 
 import com.library.domain.Borrow;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
@@ -15,4 +17,7 @@ public interface BorrowRepository extends CrudRepository<Borrow, Integer> {
     List<Borrow> findAll();
 
     Optional<Borrow> findById(int borrowId);
+
+    @Query(nativeQuery = true)
+    boolean isBorrow(@Param("C_ID") int cId, @Param("R_ID") int rId);
 }

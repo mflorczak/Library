@@ -14,13 +14,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class MyLibraryApplicationTests {
+
 	@Autowired
 	BookTitleRepository bookTitleRepository;
+
 	@Autowired
 	CopyBookRepository copyBookRepository;
-	@Test
-	public void contextLoads() {
-	}
 
 	@Test
 	public void testAddCopyBookToTitle() {
@@ -50,6 +49,5 @@ public class MyLibraryApplicationTests {
 		copyBookRepository.delete(idbooks);
 		copyBookRepository.delete(idbooks1);
 		bookTitleRepository.delete(id);
-
 	}
 }

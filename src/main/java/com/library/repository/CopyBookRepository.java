@@ -1,5 +1,6 @@
 package com.library.repository;
 
+import com.library.domain.Borrow;
 import com.library.domain.CopyBook;
 import com.library.domain.CopyBookQuantityDto;
 import org.springframework.data.jpa.repository.Query;
@@ -18,6 +19,9 @@ public interface CopyBookRepository extends CrudRepository<CopyBook, Integer> {
     List<CopyBook> findAll();
 
     Optional<CopyBook> findById(int copyBookId);
+
+
+
     @Query(nativeQuery = true)
-    CopyBookQuantityDto quantityBook(@Param("book_title_id") int book_title_id);
+    int quantityBook(@Param("book_title_id") int book_title_id);
 }

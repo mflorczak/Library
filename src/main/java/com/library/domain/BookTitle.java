@@ -46,7 +46,4 @@ public class BookTitle {
         this.publicationOfYear = publicationOfYear;
     }
 
-    public int quantityBooks() {
-        return copyBookList.size();
-    }
 }

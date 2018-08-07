@@ -2,7 +2,6 @@ package com.library.controller;
 
 import com.library.domain.BorrowDto;
 import com.library.domain.CopyBookDto;
-import com.library.domain.CopyBookQuantityDto;
 import com.library.mapper.Mapper;
 import com.library.service.DbService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +14,12 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 @RequestMapping(value = "v1/copyBook")
 public class CopyBookController {
+
     @Autowired
     private DbService dbService;
 
     @Autowired
     private Mapper mapper;
-
 
     @RequestMapping(method = RequestMethod.GET, value = "getCopyBooks")
     public List<CopyBookDto> getCopyBooks(){
@@ -64,7 +63,9 @@ public class CopyBookController {
 
     @RequestMapping(method = RequestMethod.POST, value = "createBorrow", consumes = APPLICATION_JSON_VALUE)
     public void createBorrow(@RequestBody BorrowDto borrowDto) throws ReaderNotFoundException, CopyBookNotFoundException {
-        dbService.saveBorrow(mapper.mapToBorrow(borrowDto));
+        if(dbService.borrowBook(borrowDto.getCopyBookId(), borrowDto.getReaderId())) {
+            dbService.saveBorrow(mapper.mapToBorrow(borrowDto));
+        }
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "deleteBorrow")
@@ -73,8 +74,7 @@ public class CopyBookController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "getQuantityBook")
-    public CopyBookQuantityDto getQuantityBook(@RequestParam int book_title_id) {
+    public int getQuantityBook(@RequestParam int book_title_id) {
         return dbService.getQuantity(book_title_id);
     }
-
 }

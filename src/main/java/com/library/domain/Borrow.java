@@ -12,6 +12,10 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
+@NamedNativeQuery(
+        name = "Borrow.isBorrow",
+        query = "SELECT IsBorrow(:C_ID, :R_ID)"
+)
 @Entity(name = "BORROWS")
 public class Borrow {
     @Id
@@ -21,16 +25,18 @@ public class Borrow {
 
     @ManyToOne
     @JoinColumn(name = "COPY_BOOK_ID")
+    @NotNull
     private CopyBook copyBook;
+
     @ManyToOne
     @JoinColumn(name = "READER_ID")
+    @NotNull
     private Reader reader;
 
     @NotNull
     @Column(name = "BORROW_DATE")
     private LocalDate borrowDate;
 
-    @NotNull
     @Column(name = "RETURN_DATE")
     private LocalDate returnDate;
 }
