@@ -74,7 +74,11 @@ public class CopyBookController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "getQuantityBook")
+<<<<<<< HEAD
     public int getQuantityBook(@RequestParam int book_title_id) {
+=======
+    public int getQuantityBook(@RequestParam("id") int book_title_id) {
+>>>>>>> 9525ff312f8ba2f7e8655c9d550db12fca3f5e68
         return dbService.getQuantity(book_title_id);
     }
 }

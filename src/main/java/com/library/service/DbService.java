@@ -90,7 +90,11 @@ public class DbService {
         readerRepository.delete(id);
     }
 
+<<<<<<< HEAD
     public int getQuantity(final int id) {
+=======
+    public int getQuantity(int id) {
+>>>>>>> 9525ff312f8ba2f7e8655c9d550db12fca3f5e68
         return copyBookRepository.quantityBook(id);
     }
 
